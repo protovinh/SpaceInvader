@@ -29,17 +29,30 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Mesh")
 		class UStaticMeshComponent* MeshComponent;
 
+	UPROPERTY(EditAnywhere, Category = "Bullet")
+		TSubclassOf<class AMyBullet> BulletBlueprint;  //unreal engins way to categories something like for example Damage type.
+
+	UPROPERTY(EditAnywhere, Category = "Bullet")
+		float BulletSpawnDistance = 1.f;
+
 	UPROPERTY(EditAnywhere, Category = "PawnMovement")
 	float MaxSpeed;
 
-	UPROPERTY(EditAnywhere)
-	class UCameraComponent* Camera;
+	UPROPERTY(EditAnywhere, Category = "FireRate")
+	float SpawnLimit = 4.f;
+
+
+
 
 
 private:
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+	void Shoot();
+
+	float LastSpawn = 4.f;
+
 
 	FVector CurrentVelocity;
 };

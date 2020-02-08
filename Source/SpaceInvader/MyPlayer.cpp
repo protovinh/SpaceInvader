@@ -4,8 +4,7 @@
 #include "MyPlayer.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/InputComponent.h"
-#include "Camera/CameraComponent.h"
-
+#include "MyBullet.h"
 
 // Sets default values
 AMyPlayer::AMyPlayer()
@@ -17,11 +16,6 @@ AMyPlayer::AMyPlayer()
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
 	MeshComponent->SetupAttachment(GetRootComponent());
 
-	//if you want the camera to follow the player, but this is uneccesary in spaceinvaders
-	/*Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(GetRootComponent());
-	Camera->SetRelativeLocation(FVector(-300.f, 0.f, 300.f));
-	Camera->SetRelativeRotation(FRotator(-45.f, 0.f, 0.f));*/
 
 
 	CurrentVelocity = FVector(0.f);
@@ -42,6 +36,9 @@ void AMyPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	LastSpawn += DeltaTime;
+
+
 	FVector NewLocation = GetActorLocation() + (CurrentVelocity * DeltaTime);
 	
 	if (NewLocation.Y < 820 && NewLocation.Y > -820) {
@@ -56,6 +53,7 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	
 	//PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMyPlayer::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AMyPlayer::MoveRight);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), IE_Pressed, this, &AMyPlayer::Shoot);
 
 }
 
@@ -66,6 +64,20 @@ void AMyPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 //}
 void AMyPlayer::MoveRight(float Value)
 {
+	//the velocity in which the object moves in the Y axis
 	CurrentVelocity.Y = FMath::Clamp(Value, -1.f, 1.f) * MaxSpeed;
 
+}
+
+void AMyPlayer::Shoot()
+{
+	if (SpawnLimit < LastSpawn) {
+
+		UWorld* World = GetWorld();
+		if (World)
+		{
+			World->SpawnActor<AMyBullet>(BulletBlueprint, GetActorLocation() + FVector(BulletSpawnDistance, 0.f, 0.f), GetActorRotation());
+		}
+		LastSpawn = 0.f;
+	}
 }
