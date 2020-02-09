@@ -5,6 +5,7 @@
 #include "Components/SphereComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Enemy2.h"
+#include "MyPlayer.h"
 
 // Sets default values
 AMyBullet::AMyBullet()
@@ -61,6 +62,7 @@ void AMyBullet::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Othe
 
             //Destroy Bullet:
             Destroy();
+            Score += 100;
         }
 }
 
