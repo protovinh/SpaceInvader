@@ -22,8 +22,6 @@ AMyPlayer::AMyPlayer()
 	MaxSpeed = 100.f;
 
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
-
-	Score = 0;
 }
 
 // Called when the game starts or when spawned

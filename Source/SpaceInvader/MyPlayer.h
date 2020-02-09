@@ -41,8 +41,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "FireRate")
 	float SpawnLimit = 4.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category ="Score")
-	extern	int32 Score;
+
 
 
 
@@ -51,7 +50,6 @@ private:
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 	void Shoot();
-
 
 	float LastSpawn = 4.f;
 
